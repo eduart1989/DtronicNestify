@@ -19,8 +19,8 @@ Follow the instructions below to set up and run the API in your development envi
 1. Clone this repository to your local machine:
 
    ```bash
-   git clone https://github.com/your-username/nestjs-dtq-exercise.git
-   cd nestjs-dtq-exercise
+   git clone https://github.com/eduart1989/DtronicNestify.git
+   cd DtronicNestify
    ```
 
 2. Install the project dependencies:
