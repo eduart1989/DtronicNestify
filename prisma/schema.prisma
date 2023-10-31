@@ -1,0 +1,123 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  email String @unique
+  hash  String
+
+  firstName String?
+  lastName  String?
+
+  banks Bank[]
+
+  @@map("users")
+}
+
+model Bank {
+  id             Int           @id @default(autoincrement())
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  age            Int
+  job            String
+  marital        MaritalStatus
+  education      String
+  default        DefaultStatus
+  housing        HousingStatus
+  loan           LoanStatus
+  contact        ContactMethod
+  month          Month
+  day_of_week    DayOfWeek
+  duration       Int
+  campaign       Int
+  pdays          Int
+  previous       Int
+  poutcome       POutcome
+  emp_var_rate   Float
+  cons_price_idx Float
+  cons_conf_idx  Float
+  euribor3m      Float
+  nr_employed    Float
+  y              TargetStatus
+  User           User?         @relation(fields: [userId], references: [id])
+  userId         Int?
+
+  @@map("banks")
+}
+
+enum MaritalStatus {
+  single
+  married
+  divorced
+  unknown
+}
+
+enum DefaultStatus {
+  yes
+  no
+  unknown
+}
+
+enum HousingStatus {
+  yes
+  no
+  unknown
+}
+
+enum LoanStatus {
+  yes
+  no
+  unknown
+}
+
+enum ContactMethod {
+  cellular
+  telephone
+}
+
+enum Month {
+  jan
+  feb
+  mar
+  apr
+  may
+  jun
+  jul
+  aug
+  sep
+  oct
+  nov
+  dec
+}
+
+enum DayOfWeek {
+  mon
+  tue
+  wed
+  thu
+  fri
+}
+
+enum POutcome {
+  success
+  failure
+  nonexistent
+}
+
+enum TargetStatus {
+  yes
+  no
+  unknown
+}
