@@ -34,6 +34,7 @@ Follow the instructions below to set up and run the API in your development envi
 1. Start the PostgreSQL database in Docker and apply migrations:
 
    ```bash
+   docker-compose build && docker-compose up -d 
    yarn db:dev:restart
    ```
 
@@ -52,6 +53,7 @@ Follow the instructions below to set up and run the API in your development envi
 You can run the end-to-end tests for the API using the following command:
 
 ```bash
+yarn pretest:e2e
 yarn test:e2e
 ```
 
