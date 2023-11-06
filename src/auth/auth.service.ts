@@ -20,16 +20,27 @@ export class AuthService {
   async signup(dto: AuthDto) {
     // generate the password hash
     const hash = await argon.hash(dto.password);
+    const { email, firstName, lastName } = dto;
     // save the new user in the db
     try {
       const user = await this.prisma.user.create({
         data: {
-          email: dto.email,
+          email,
+          firstName,
+          lastName,
           hash,
         },
       });
 
-      return this.signToken(user.id, user.email);
+      const token = await this.signToken(
+        user.id,
+        user.email,
+      );
+
+      return {
+        message: 'User created successful!',
+        ...token,
+      };
     } catch (error) {
       if (
         error instanceof
@@ -69,13 +80,22 @@ export class AuthService {
       throw new ForbiddenException(
         'Credentials incorrect',
       );
-    return this.signToken(user.id, user.email);
+    delete user.hash;
+    const token = await this.signToken(
+      user.id,
+      user.email,
+    );
+
+    return {
+      ...token,
+      ...user,
+    };
   }
 
   async signToken(
     userId: number,
     email: string,
-  ): Promise<{ access_token: string }> {
+  ): Promise<{ accessToken: string }> {
     const payload = {
       sub: userId,
       email,
@@ -91,7 +111,7 @@ export class AuthService {
     );
 
     return {
-      access_token: token,
+      accessToken: token,
     };
   }
 }

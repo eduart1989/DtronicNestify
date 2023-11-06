@@ -11,7 +11,7 @@ import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class BankService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async getBanks(
     userId: number,
@@ -22,13 +22,25 @@ export class BankService {
       ...paginationParams,
     };
 
-    return this.prisma.bank.findMany({
+    const data = await this.prisma.bank.findMany({
       where: {
         userId,
         ...filterParams,
       },
       ...pagination,
     });
+    const totalRows =
+      await this.prisma.bank.count({
+        where: { userId },
+      });
+    const totalPages = Math.ceil(
+      totalRows / paginationParams.take,
+    );
+    return {
+      data,
+      totalRows,
+      totalPages,
+    };
   }
 
   getBankById(userId: number, bankId: number) {

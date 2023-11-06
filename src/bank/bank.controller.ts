@@ -25,7 +25,7 @@ import { Prisma } from '@prisma/client';
 @UseGuards(JwtGuard)
 @Controller('banks')
 export class BankController {
-  constructor(private bankService: BankService) { }
+  constructor(private bankService: BankService) {}
 
   @Get()
   async getBanks(
@@ -62,11 +62,11 @@ export class BankController {
     }
     const orderParam = JSON.parse(orders);
     const paginationParams: Prisma.BankFindManyArgs =
-    {
-      skip: (page - 1) * pageSize,
-      take: pageSize,
-      orderBy: orderParam,
-    };
+      {
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        orderBy: orderParam,
+      };
 
     return this.bankService.getBanks(
       userId,

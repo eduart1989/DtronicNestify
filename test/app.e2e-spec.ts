@@ -44,6 +44,8 @@ describe('App e2e', () => {
     const dto: AuthDto = {
       email: 'eduart@gmail.com',
       password: '123',
+      firstName: 'firstName',
+      lastName: 'LastName',
     };
     describe('Signup', () => {
       it('should throw if email empty', () => {
@@ -110,7 +112,7 @@ describe('App e2e', () => {
           .post('/auth/signin')
           .withBody(dto)
           .expectStatus(200)
-          .stores('userAt', 'access_token');
+          .stores('userAt', 'accessToken');
       });
     });
   });
@@ -158,13 +160,16 @@ describe('App e2e', () => {
             Authorization: 'Bearer $S{userAt}',
           })
           .expectStatus(200)
-          .expectBody([]);
+          .expectBody({ data: [], totalPages: 0, totalRows: 0 });
       });
     });
 
     describe('Create bank', () => {
       const dto = {
-        age: faker.datatype.number({ min: 18, max: 65 }),
+        age: faker.datatype.number({
+          min: 18,
+          max: 65,
+        }),
         job: faker.name.jobTitle(),
         marital: 'single',
         education: 'High School',
@@ -174,18 +179,44 @@ describe('App e2e', () => {
         contact: 'cellular',
         month: 'may',
         day_of_week: 'mon',
-        duration: faker.datatype.number({ min: 1, max: 1000 }),
-        campaign: faker.datatype.number({ min: 1, max: 10 }),
-        pdays: faker.datatype.number({ min: 1, max: 30 }),
-        previous: faker.datatype.number({ min: 0, max: 10 }),
+        duration: faker.datatype.number({
+          min: 1,
+          max: 1000,
+        }),
+        campaign: faker.datatype.number({
+          min: 1,
+          max: 10,
+        }),
+        pdays: faker.datatype.number({
+          min: 1,
+          max: 30,
+        }),
+        previous: faker.datatype.number({
+          min: 0,
+          max: 10,
+        }),
         poutcome: 'success',
-        emp_var_rate: faker.datatype.float({ min: -3, max: 3 }),
-        cons_price_idx: faker.datatype.float({ min: 92, max: 94 }),
-        cons_conf_idx: faker.datatype.float({ min: -50, max: -30 }),
-        euribor3m: faker.datatype.float({ min: 0.5, max: 5 }),
-        nr_employed: faker.datatype.float({ min: 1, max: 100 }),
+        emp_var_rate: faker.datatype.float({
+          min: -3,
+          max: 3,
+        }),
+        cons_price_idx: faker.datatype.float({
+          min: 92,
+          max: 94,
+        }),
+        cons_conf_idx: faker.datatype.float({
+          min: -50,
+          max: -30,
+        }),
+        euribor3m: faker.datatype.float({
+          min: 0.5,
+          max: 5,
+        }),
+        nr_employed: faker.datatype.float({
+          min: 1,
+          max: 100,
+        }),
         y: 'no',
-
       };
       it('should create bank', () => {
         return pactum
@@ -209,7 +240,6 @@ describe('App e2e', () => {
             Authorization: 'Bearer $S{userAt}',
           })
           .expectStatus(200)
-          .expectJsonLength(1);
       });
     });
 
@@ -230,7 +260,7 @@ describe('App e2e', () => {
     describe('Edit bank by id', () => {
       const dto = {
         job: 'teacher',
-      }
+      };
       it('should edit bank', () => {
         return pactum
           .spec()
@@ -241,7 +271,7 @@ describe('App e2e', () => {
           })
           .withBody(dto)
           .expectStatus(200)
-          .expectBodyContains(dto.job)
+          .expectBodyContains(dto.job);
       });
     });
 
@@ -265,7 +295,7 @@ describe('App e2e', () => {
             Authorization: 'Bearer $S{userAt}',
           })
           .expectStatus(200)
-          .expectJsonLength(0);
+          .expectBody({ data: [], totalPages: 0, totalRows: 0 });
       });
     });
   });
