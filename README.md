@@ -1,4 +1,3 @@
-Certainly, here's an improved README file for your Nest.js REST API DATATRONiQ:
 
 # Nest.js REST API DATATRONiQ Exercise
 
